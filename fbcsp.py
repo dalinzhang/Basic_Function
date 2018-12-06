@@ -163,7 +163,7 @@ class FBCSP(object):
 
 if __name__ == "__main__":
 	subject_id = 1
-	data_folder = "/home/dadafly/program/19AAAI/bci_data/data_folder/cross_sub/"
+	data_folder = "/home/dalinzhang/scratch/datasets/BCICIV_2a_gdf/cross_sub/"
 	data = sio.loadmat(data_folder+"cross_subject_data_"+str(subject_id)+".mat")
 	
 	train_x = data["train_x"]
