@@ -13,13 +13,13 @@ from sklearn.feature_selection import mutual_info_classif, SelectPercentile
 
 class FBCSP(object):
 	def __init__(self,
-				 sample_rate,
-				 feat_sel_proportion=0.8,
-				 low_cut_hz = 4,
-				 high_cut_hz = 36,
-				 step = 4,
-				 csp_components = 4
-				 ):
+		     sample_rate,
+		     feat_sel_proportion=0.8,
+		     low_cut_hz = 4,
+		     high_cut_hz = 36,
+		     step = 4,
+		     csp_components = 4
+		    ):
 
 		self.low_cut_hz = low_cut_hz
 		self.high_cut_hz = high_cut_hz
@@ -163,7 +163,7 @@ class FBCSP(object):
 
 if __name__ == "__main__":
 	subject_id = 1
-	data_folder = "/home/dadafly/program/19AAAI/bci_data/data_folder/cross_sub/"
+	data_folder = "/home/dalinzhang/scratch/datasets/BCICIV_2a_gdf/cross_sub/"
 	data = sio.loadmat(data_folder+"cross_subject_data_"+str(subject_id)+".mat")
 	
 	train_x = data["train_x"]
@@ -173,12 +173,12 @@ if __name__ == "__main__":
 	test_y = data["test_y"].ravel()
 
 	model = FBCSP(sample_rate = 250,
-				  feat_sel_proportion=0.8,
-				  low_cut_hz = 4,
-                  high_cut_hz = 36,
-                  step = 4,
-                  csp_components = 4
-				  )
+		      feat_sel_proportion=0.8,
+		      low_cut_hz = 4,
+		      high_cut_hz = 36,
+		      step = 4,
+		      csp_components = 4
+		     )
 
 	model.fit(train_x, train_y)
 	train_feat = model.transform(train_x)
