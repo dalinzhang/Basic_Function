@@ -1,14 +1,14 @@
 import numpy as np
 
-
+# define segmentation window
 def windows(data, size, step):
     start = 0
     while ((start+size) < data.shape[0]):
         yield int(start), int(start + size)
         start += step
 
-
-def segment_signal_without_transition(data, window_size, step):
+# segment univariate time-series data
+def segment_univariate_data(data, window_size, step):
     '''
     data has shape of [n_timelength]
     '''
@@ -18,14 +18,14 @@ def segment_signal_without_transition(data, window_size, step):
             segments = segments + [data[start:end]]
     return np.array(segments)
 
-
-def segment_dataset(X, window_size, step):
+# segment multivariate time-series data
+def segment_multivariate_data(X, window_size, step):
     '''
     X has shape of [n_sample, n_timelength]
     '''
     win_x = []
     for i in range(X.shape[0]):
-        win_x = win_x + [segment_signal_without_transition(X[i], window_size, step)]
+        win_x = win_x + [segment_univariate_data(X[i], window_size, step)]
     win_x = np.array(win_x)
     return win_x
 
