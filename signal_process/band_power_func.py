@@ -21,9 +21,11 @@ def bandpower(data, sf, band, window_sec=None):
     absolute_bp : float
         Absolute band power.
     relative_bp : float
-       Relative power (= absolute band power/total power of the signal).
+        Relative power (= absolute band power/total power of the signal).
     psd : list
+        Power spectral density Y values (power)
     freqs : list
+        Power spectral density X values (frequency)
     """
     from scipy.signal import welch
     from scipy.integrate import simps
