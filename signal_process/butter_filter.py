@@ -6,7 +6,7 @@ Created on Fri Oct  6 17:49:14 2017
 @author: dadafly
 """
 
-from scipy.signal import butter, lfilter
+from scipy.signal import butter, filtfilt
 
 #####################################
 # fs is short for sampling frequency
@@ -26,7 +26,7 @@ def butter_bandpass(lowcut, highcut, fs, pass_type='band', order=3):
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, pass_type='band', order=5):
     b, a = butter_bandpass(lowcut, highcut, fs, pass_type, order=order)
-    y = lfilter(b, a, data)
+    y = filtfilt(b, a, data)
     return y
 
 
