@@ -9,10 +9,10 @@ Created on Fri Oct  6 17:49:14 2017
 from scipy.signal import butter, filtfilt
 
 #####################################
-# fs is short for sampling frequency
+# sf is short for sampling frequency
 #####################################
-def butter_bandpass(lowcut, highcut, fs, pass_type='band', order=3):
-	nyq = 0.5 * fs
+def butter_bandpass(lowcut, highcut, sf, pass_type='band', order=3):
+	nyq = 0.5 * sf
 	low = lowcut / nyq
 	high = highcut / nyq
 	if 'band' in pass_type:
@@ -24,8 +24,8 @@ def butter_bandpass(lowcut, highcut, fs, pass_type='band', order=3):
 	return b, a
 
 
-def butter_bandpass_filter(data, lowcut, highcut, fs, pass_type='band', order=5):
-    b, a = butter_bandpass(lowcut, highcut, fs, pass_type, order=order)
+def butter_bandpass_filter(data, lowcut, highcut, sf, pass_type='band', order=5):
+    b, a = butter_bandpass(lowcut, highcut, sf, pass_type, order=order)
     y = filtfilt(b, a, data)
     return y
 
@@ -36,7 +36,7 @@ if __name__ == "__main__":
 	from scipy.signal import freqz
 	
 	# Sample rate and desired cutoff frequencies (in Hz).
-	fs = 5000.0
+	sf = 5000.0
 	lowcut = 500.0
 	highcut = 1250.0
 	pass_type = 'band'
@@ -45,11 +45,11 @@ if __name__ == "__main__":
 	plt.figure(1)
 	plt.clf()
 	for order in [3, 6, 9]:
-	    b, a = butter_bandpass(lowcut, highcut, fs, pass_type, order=order)
+	    b, a = butter_bandpass(lowcut, highcut, sf, pass_type, order=order)
 	    w, h = freqz(b, a, worN=2000)
-	    plt.plot((fs * 0.5 / np.pi) * w, abs(h), label="order = %d" % order)
+	    plt.plot((sf * 0.5 / np.pi) * w, abs(h), label="order = %d" % order)
 	
-	plt.plot([0, 0.5 * fs], [np.sqrt(0.5), np.sqrt(0.5)],
+	plt.plot([0, 0.5 * sf], [np.sqrt(0.5), np.sqrt(0.5)],
 	         '--', label='sqrt(0.5)')
 	plt.xlabel('Frequency (Hz)')
 	plt.ylabel('Gain')
@@ -58,7 +58,7 @@ if __name__ == "__main__":
 	
 	# Filter a noisy signal.
 	T = 0.05
-	nsamples = T * fs
+	nsamples = T * sf
 	t = np.linspace(0, T, nsamples, endpoint=False)
 	a = 0.02
 	f0 = 600.0
@@ -70,7 +70,7 @@ if __name__ == "__main__":
 	plt.clf()
 	plt.plot(t, x, label='Noisy signal')
 	
-	y = butter_bandpass_filter(x, lowcut, highcut, fs, pass_type='band', order=6)
+	y = butter_bandpass_filter(x, lowcut, highcut, sf, pass_type='band', order=6)
 	plt.plot(t, y, label='Filtered signal (%g Hz)' % f0)
 	plt.xlabel('time (seconds)')
 	plt.hlines([-a, a], 0, T, linestyles='--')
