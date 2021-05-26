@@ -1,7 +1,7 @@
 # function for extracting band power of 1D time-series signal
 import numpy as np
 
-def bandpower(data, sf, band, window_sec=None, relative=False):
+def bandpower(data, sf, band, window_sec=None):
     """Compute the average power of the signal x in a specific frequency band.
 
     Parameters
@@ -15,14 +15,15 @@ def bandpower(data, sf, band, window_sec=None, relative=False):
     window_sec : float
         Length of each window in seconds.
         If None, window_sec = (1 / min(band)) * 2
-    relative : boolean
-        If True, return the relative power (= divided by the total power of the signal).
-        If False (default), return the absolute power.
 
     Return
     ------
-    bp : float
-        Absolute or relative band power.
+    absolute_bp : float
+        Absolute band power.
+    relative_bp : float
+       Relative power (= absolute band power/total power of the signal).
+    psd : list
+    freqs : list
     """
     from scipy.signal import welch
     from scipy.integrate import simps
@@ -45,8 +46,7 @@ def bandpower(data, sf, band, window_sec=None, relative=False):
     idx_band = np.logical_and(freqs >= low, freqs <= high)
 
     # Integral approximation of the spectrum using Simpson's rule.
-    bp = simps(psd[idx_band], dx=freq_res)
-
-    if relative:
-        bp /= simps(psd, dx=freq_res)
-    return bp
+    absolute_bp = simps(psd[idx_band], dx=freq_res)
+    relative_bp = absolute_bp/simps(psd, dx=freq_res)
+    
+    return absolute_bp, relative_bp, psd, freqs
