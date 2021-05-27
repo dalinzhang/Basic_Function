@@ -23,9 +23,9 @@ def bandpower(data, sf, band, window_sec=None):
     relative_bp : float
         Relative power (= absolute band power/total power of the signal).
     psd : array
-        Power spectral density Y values (power)
+        Power spectral density or power spectrum Y values (power)
     freqs : array
-        Power spectral density X values (frequency)
+        Power spectral density or power spectrum X values (frequency)
     """
     from scipy.signal import welch
     from scipy.integrate import simps
@@ -39,7 +39,9 @@ def bandpower(data, sf, band, window_sec=None):
         nperseg = (2 / low) * sf
 
     # Compute the modified periodogram (Welch)
-    freqs, psd = welch(data, sf, nperseg=nperseg)
+    # The overlap is usually set to be half of the segment length
+    # Reference: DREAMER: A Database for EmotionRecognition Through EEG and ECG SignalsFrom Wireless Low-cost Off-the-Shelf Devices, JBHI, 2018
+    freqs, psd = welch(data, sf, nperseg=nperseg, noverlap=nperseg//2)
 
     # Frequency resolution
     freq_res = freqs[1] - freqs[0]
